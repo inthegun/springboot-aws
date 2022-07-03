@@ -4,6 +4,12 @@ var main = {
         $('#btn-save').on('click',function () {
             _this.save();
         });
+        $('#btn-update').on('click',function() { // btn-update 란 id 를 가진 HTML 엘리먼트에 click 이벤트가 발생할때 update function 실행
+            _this.update();
+        });
+        $('#btn-delete').on('click',function() {
+            _this.delete();
+        });
     },
     save() {
         let data = {
@@ -24,7 +30,42 @@ var main = {
         }).fail(function (error) {
             alert(JSON.stringify(error))
         });
-    }
+    },
+    update() { // 2
+        let data = {
+            title : $('#title').val(),
+            content : $('#content').val()
+        };
+        let id = $('#id').val();
+
+        $.ajax({
+            type : 'PUT', // Controller 있는 API에ㅓㅅ 이미 @PutMapping 으로 선언했기 때문에 [ REST API 규약 ]
+            url : '/api/v1/posts/'+id, // 어느 게시물을 수정할지 URL Path 로 구분
+            dataType: 'json',
+            contentType: 'application/json;charset=utf-8',
+            data : JSON.stringify(data),
+        }).done(function () {
+            alert('글이 수정되었습니다.');
+            window.location.href='/';
+        }).fail(function (error) {
+            alert(JSON.stringify(error))
+        });
+    },
+    delete(){
+        let id = $('#id').val();
+
+        $.ajax({
+            type: 'DELETE',
+            url : '/api/v1/posts/'+id,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8'
+        }).done(function(){
+            alert('글이 삭제되었습니다.');
+            window.location.href = '/';
+        }).fail(function(error){
+            alert(JSON.stringify(error));
+        });
+    },
 
 };
 main.init();

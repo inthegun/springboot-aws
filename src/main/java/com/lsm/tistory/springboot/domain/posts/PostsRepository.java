@@ -1,6 +1,9 @@
 package com.lsm.tistory.springboot.domain.posts;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 /**
  * 보통 ibatis나 Mybatis 등에서 Dao 라고 불리는 DB Layer 접근자
@@ -9,5 +12,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Entity 클래스는 기본 Repository 없이는 제대로 역할을 할수 가 없다.
  */
 public interface PostsRepository extends JpaRepository<Posts,Long> {
-
+    // p.146
+    @Query("SELECT p FROM Posts p ORDER BY p.id DESC")
+    List<Posts> findAllDesc();
 }

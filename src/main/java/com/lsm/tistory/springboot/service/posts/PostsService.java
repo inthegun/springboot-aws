@@ -2,6 +2,7 @@ package com.lsm.tistory.springboot.service.posts;
 
 import com.lsm.tistory.springboot.domain.posts.Posts;
 import com.lsm.tistory.springboot.domain.posts.PostsRepository;
+import com.lsm.tistory.springboot.web.dto.PostsListResponseDto;
 import com.lsm.tistory.springboot.web.dto.PostsResponseDto;
 import com.lsm.tistory.springboot.web.dto.PostsSaveRequestDto;
 import com.lsm.tistory.springboot.web.dto.PostsUpdateRequestDto;
@@ -9,6 +10,9 @@ import javafx.geometry.Pos;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -40,6 +44,17 @@ public class PostsService {
      * 이게 가능한 이유는 JPA의 영속성 컨텍스트 떄문
      * 영속성 컨텍스트란 : 엔티티를 영구 저장하는 환경
      */
+
+    /**
+     * @Transactional(readOnly =true)를 주면 트랜잭션 범위는 유지하되 , 조회 기능만 남겨두어 조회 속도가 개선되기 때문에
+     * 등록 , 수정 , 삭제 기능이 전혀 없는 서비스 메소드에서 사용하는 것을 추천
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public List<PostsListResponseDto> findAllDesc() {
+        return postsRepository.findAllDesc().stream().map(PostsListResponseDto::new) // .map(posts -> new PostsListResponseDto(posts))
+                .collect(Collectors.toList());
+    }
 }
 
 /**

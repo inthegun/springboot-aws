@@ -8,3 +8,7 @@
 
 # Log File
 *.log
+
+
+# properties
+application-oauth.properties
